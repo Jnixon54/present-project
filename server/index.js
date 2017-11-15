@@ -23,6 +23,8 @@ const OAuth2 = google.auth.OAuth2;
 // const server_secure = https.createServer(options, app).listen(4000);
 const socket = require('socket.io');
 // const io = require('socket.io')();
+// Controllers
+const slides = require('./controllers/slides_controller');
 //////////////////////////////////////////////////////////////////
 // Database
 //////////////////////////////////////////////////////////////////
@@ -40,22 +42,17 @@ sequelize
 .catch(err => {
   console.error('Unable to connect to the database:', err);
 });
-
-// Controllers
-const slides = require('./controllers/slides_controller');
 //////////////////////////////////////////////////////////////////
 // App Setup
 //////////////////////////////////////////////////////////////////
 const app = express();
-
 app.use(cors());
 app.use(json());
 app.use(session({
   secret: SESSION_SECRET,
   saveUninitialized: false,
   resave: false
-}))
-
+}));
 //////////////////////////////////////////////////////////////////
 // GOOGLE AUTH ENDPOINTS
 //////////////////////////////////////////////////////////////////
@@ -87,19 +84,19 @@ app.get("/oauth2callback", function(req, res) {
 const server = app.listen(PORT, () => console.log(`Listening for socket connections on port ${PORT}`));
 
 const io = socket(server);
-io.on('connection', socket => {console.log(`Socket connected on ${socket.id}`)})
-// io.on('connection', (client) => {
-//   client.on('subscribeToTimer', (interval) => {
-//     console.log('client is subscribing to timer with interval ', interval);
-//     setInterval(() => {
-//       client.emit('timer', new Date());
-//     }, interval);
-//   })
-// });
 
-// io.listen(SOCKET_PORT);
-// // app.get('/api/test/', (req, res, next) => {
-// //   res.json("success")
-// // })
+io.on('connection', socket => {
+  const socketID = socket.id;
+  // const message = {text: 'Fucking sockets, man!'}
+  // setInterval(() => {
+  //   socket.emit('test', message);
+  //   console.log('message emitted: ' + message.text)
+  // }, 5000000);
+  console.log(`${socket.id} connected!`)
+  socket.on('disconnect', (socket) => {
+    console.log(`${socketID} disconnected`);
+  });
+
+})
 
 // app.listen(PORT, () => console.log(`listening on port ${PORT}`));

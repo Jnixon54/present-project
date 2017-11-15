@@ -27,7 +27,8 @@ class ImportSlides extends Component {
         <form>
           <input type="url" value={this.state.value} onChange={this.handleChange}placeholder="https://docs.google.com/presentation/d/..." />
           <input type="submit" value="Import" onClick={this.handleSubmit}/>
-        </form>https://docs.google.com/presentation/d/1oCNQlcuNkiRwJu660XBnvZTHYdEOqw4DIJzPvOv85ek/edit#slide=id.gc6f972163_0_0
+        </form>
+        https://docs.google.com/presentation/d/1oCNQlcuNkiRwJu660XBnvZTHYdEOqw4DIJzPvOv85ek/edit#slide=id.gc6f972163_0_0
       </div>
     )
   }

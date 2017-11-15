@@ -14,8 +14,8 @@ module.exports = {
       }
       req.session.slides_array = slides_array;
       console.log(req.session);
-      next()
-    }).catch(console.log)
+      next();
+    }).catch(console.log);
   },
   getSlideImage: function(req, res, next){
     const presentationId = req.session.current_presentation_id;
@@ -33,7 +33,7 @@ module.exports = {
         console.log(result.data.contentUrl);
         slides_array[index].contentUrl = result.data.contentUrl})
     }).then(() => req.slides_array = slides_array).then(() => console.log(req.slides_array))
-      .catch(console.log)
+      .catch(console.log);
     res.redirect('http://localhost:3000/');
     next();
   }
