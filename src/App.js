@@ -10,10 +10,10 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      presentation_id: ''
+      presentation_id: '',
+
     };
     this.handleImport = this.handleImport.bind(this);
-
   }
   handleImport(originalUrl){
     let url = '';
@@ -28,6 +28,7 @@ class App extends Component {
       console.log(err);
     }
   }
+
   render() {
     return (
       <div className="App">
