@@ -37,7 +37,6 @@ module.exports = {
     // Calling all axios requests
     axios.all(promises).then(results => {
       results.forEach((result, index) => {
-        // console.log(result.data.contentUrl);
         slides_array[index].slide_number = index + 1;
         slides_array[index].contentUrl = result.data.contentUrl;
       })
