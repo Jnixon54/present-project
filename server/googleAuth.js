@@ -19,3 +19,4 @@ const google_auth_url = oauth2Client.generateAuthUrl({
 });
 
 exports.google_auth_url = google_auth_url;
+exports.oauth2Client = oauth2Client;

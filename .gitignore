@@ -16,6 +16,10 @@
 .env.test.local
 .env.production.local
 .config
+server.crt
+server.csr
+server.key
+server.key.org
 
 npm-debug.log*
 yarn-debug.log*

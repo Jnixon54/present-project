@@ -1,14 +1,31 @@
 const express = require('express');
 const cors = require('cors');
 const {json} = require('body-parser');
-const Sequelize = require('sequelize');
-const {PORT, DATABASE_URI} = require('../.config');
 const session = require('express-session');
+const {PORT, SOCKET_PORT, DATABASE_URI, SESSION_SECRET} = require('../.config');
+
+const Sequelize = require('sequelize');
+
 const {google_auth_url, oauth2Client} = require('./googleAuth');
 const google = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
-const {isAuthed} = require('./middleware/googleRedirect');
+// Code for simultaneously allowing http and https connections.
+// const https = require('https');
+// const http = require('http');
+// const fs = require('fs');
+// let options = {
+//   key: fs.readFileSync(__dirname + '/../server.key'),
+//   cert: fs.readFileSync(__dirname + '/../server.crt'),
+//   requestCert: false,
+//   rejectUnauthorized: false
+// }
+// const server = http.createServer(app).listen(PORT, () => console.log(`Listening for socket connections on port ${PORT}`));
+// const server_secure = https.createServer(options, app).listen(4000);
+const socket = require('socket.io');
+// const io = require('socket.io')();
+//////////////////////////////////////////////////////////////////
 // Database
+//////////////////////////////////////////////////////////////////
 const sequelize = new Sequelize(DATABASE_URI, {
   dialectOptions: {
       ssl: true
@@ -26,54 +43,63 @@ sequelize
 
 // Controllers
 const slides = require('./controllers/slides_controller');
-
+//////////////////////////////////////////////////////////////////
+// App Setup
+//////////////////////////////////////////////////////////////////
 const app = express();
 
 app.use(cors());
 app.use(json());
-// app.options('*', cors())
+app.use(session({
+  secret: SESSION_SECRET,
+  saveUninitialized: false,
+  resave: false
+}))
 
+//////////////////////////////////////////////////////////////////
+// GOOGLE AUTH ENDPOINTS
+//////////////////////////////////////////////////////////////////
 // app.get('/api/presentation/getpresentation/:id', isAuthed(google_auth_url));
-app.get('/api/presentation/getpresentation/:id', function(req, res){res.redirect(google_auth_url)});
-// app.get('/api/presentation/getslide/', slides.getSlideImage);
-
-// app.get('/oauth2callback',function(req, res){
-//   const code = req.query.code;
-//   oauth2Client.getToken(code, function(err, tokens) {
-//     console.log('testing weiners')
-//     if(!err){
-//       oauth2Client.setCredentials(tokens);
-//       res.redirect('/');
-//       return;
-//     }
-//     res.status(500).send(err);
-//   })
-// });
-// https://localhost:3001/oauth2callback?code=4/YnDzCqzgqChyzE_iWp9PzEpFSQPCYraEeY1Gwfv8IKw#
-// (req, res, next) => {req.headers.authorization = 'value'; next();}
-
-
-// app.get("/login", function(req,res) {
-  // res.redirect(google_auth_url)
-// })
-
+app.get('/api/presentation/getpresentation/:id', function(req, res, next){
+  req.session.presentation_id = req.params.id;
+  res.redirect(google_auth_url)}  );
+app.get('/api/presentation/:id', function(req, res, next){console.log('Retrieving presentation info for: ' + req.params.id); next()}, slides.getPresentation, slides.getSlideImage)
+app.get('/api/presentation/getslide/', slides.getSlideImage);
 app.get("/oauth2callback", function(req, res) {
-
   const code = req.query.code
-  console.log("doodydoooo")
-  console.log(req.query)
+  console.log(code)
   oauth2Client.getToken(code, function(err, tokens) {
     if (!err) {
       oauth2Client.setCredentials(tokens)
-      // req.session.tokens = tokens
-      res.redirect('/')
+      req.session.tokens = tokens
+      res.redirect(`/api/presentation/${req.session.presentation_id}`)
       return
     }
     res.status(500).send(err)
   })
 })
-// app.get('/api/test/', (req, res, next) => {
-//   res.json("success")
-// })
+// google.options({
+//   auth: oauth2Client
+// });
+//////////////////////////////////////////////////////////////////
+// SOCKET SETUP
+//////////////////////////////////////////////////////////////////
+const server = app.listen(PORT, () => console.log(`Listening for socket connections on port ${PORT}`));
 
-app.listen(PORT, () => console.log(`listening on port ${PORT}`));
+const io = socket(server);
+io.on('connection', socket => {console.log(`Socket connected on ${socket.id}`)})
+// io.on('connection', (client) => {
+//   client.on('subscribeToTimer', (interval) => {
+//     console.log('client is subscribing to timer with interval ', interval);
+//     setInterval(() => {
+//       client.emit('timer', new Date());
+//     }, interval);
+//   })
+// });
+
+// io.listen(SOCKET_PORT);
+// // app.get('/api/test/', (req, res, next) => {
+// //   res.json("success")
+// // })
+
+// app.listen(PORT, () => console.log(`listening on port ${PORT}`));

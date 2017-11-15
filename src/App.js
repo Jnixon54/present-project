@@ -3,6 +3,8 @@ import './App.css';
 import axios from 'axios';
 import Login from './components/Login';
 import ImportSlides from './components/ImportSlides';
+import SocketTest from './components/SocketTest';
+
 
 class App extends Component {
   constructor(props) {
@@ -40,6 +42,7 @@ class App extends Component {
         TEST
         <Login />
         <ImportSlides handleImport={this.handleImport}/>
+        <SocketTest />
       </div>
     );
   }
