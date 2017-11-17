@@ -19,7 +19,7 @@ class Login extends Component {
   }
   handleSubmit(event){
     event.preventDefault();
-    axios.post('http://localhost:3001/user', {
+    axios.post('http://localhost:3001/login', {
       username: this.state.username,
       password: this.state.password
     }).then(response => console.log(response)).catch(console.log)
@@ -33,6 +33,7 @@ class Login extends Component {
             <input type="password" name="password" value={this.state.password} onChange={this.handleChange} placeholder="Password" />
             <input type="submit" value="Submit" onClick={this.handleSubmit}/>
           </form>
+          <a href="http://localhost:3001/google/auth/login">Login with google</a>
       </div>
     )
   }
