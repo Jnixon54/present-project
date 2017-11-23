@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 // import axios from 'axios';
-import Login from './components/Login';
+import HomePage from './components/HomePage';
 import ImportSlides from './components/ImportSlides';
-import SocketTest from './components/SocketTest';
 
 
 class App extends Component {
@@ -28,14 +27,27 @@ class App extends Component {
       console.log(err);
     }
   }
+  handleChange(event){
+    const name = event.target.name
+    this.setState({
+      [name]: event.target.value
+    })
+  }
+  // handleSubmit(event){
+  //   event.preventDefault();
+  //   axios.post('http://localhost:3001/login', {
+  //     username: this.state.username,
+  //     password: this.state.password
+  //   }).then(response => console.log(response)).catch(console.log)
+  // }
 
   render() {
     return (
       <div className="App">
-        TEST
-        <Login />
-        <ImportSlides handleImport={this.handleImport}/>
-        <SocketTest />
+        <div className="container">
+          <HomePage />
+          <ImportSlides handleImport={this.handleImport}/>
+        </div>
       </div>
     );
   }

@@ -1,0 +1,19 @@
+input {
+  color: white;
+  text-align: right;
+  background: transparent;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid rgb(255, 0, 140);
+  padding: 0;
+}
+/* .button {
+  padding: 0px;
+} */
+.localLogin {
+  
+  display: flex;
+  justify-content: space-between;
+  margin-left: auto;
+  width: 50%;
+}

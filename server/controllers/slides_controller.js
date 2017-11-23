@@ -8,23 +8,23 @@ module.exports = {
       headers: { Authorization: 'Bearer ' + req.session.tokens.access_token }
     }).then(result => {
       for(let i = 0; i < result.data.slides.length; i++){
-        slides_array.push({presentationId: presentationId, objectId: result.data.slides[i].objectId})
+        slides_array.push({ presentationId: presentationId, 
+                            objectId: result.data.slides[i].objectId})
       }
       res.locals.slides_array = slides_array;
       res.locals.presentationId = presentationId;
       next();
     }).catch(console.log);
   },
-  // storePresentation: function(req, res, next){
-  //   console.log(req.session.user);
-  //   axios.post('/presentation', {
-  //     owner_id: req.session.user.id,
-  //     id_string: res.locals.presentationId
-  //   }).then(response => {
-  //     res.locals.parent_id = response.data.user.id
-  //     next()
-  //   }).catch(console.log);
-  // },
+  storePresentation: function(req, res, next){
+    console.log('STORE', res.locals);
+    axios.post('http://localhost:3001/presentation', { owner_id: req.session.user,
+                                                       id_string: res.locals.presentationId
+    }).then(response => {
+      res.locals.parent_id = response.data.id
+      next()
+    }).catch(err => console.log('Presentation Storage Error: ', err));
+  },
   getSlideImage: function(req, res, next){
     const slides_array = res.locals.slides_array
     const promises = [];
@@ -51,10 +51,10 @@ module.exports = {
     const promises = [];
     for (let i = 0; i < slides_array.length; i++){
       promises.push(
-        axios.post('http://localhost:3001/slide', {
-          url: slides_array[i].contentUrl,
-          slide_number: slides_array[i].slide_number,
-          parent_presentation: slides_array[i].presentationId
+        axios.post('http://localhost:3001/slide', { url: slides_array[i].contentUrl,
+                                                    slide_number: slides_array[i].slide_number,
+                                                    parent_presentation: slides_array[i].presentationId,
+                                                    parent_id: res.locals.parent_id
         })
       );
     }

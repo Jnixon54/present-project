@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import './Login.css';
 
 class Login extends Component {
   constructor(props) {
@@ -29,11 +30,13 @@ class Login extends Component {
     return (
       <div>
         <form>
+          <div className="localLogin">
             <input type="text" name="username" value={this.state.username} onChange={this.handleChange} placeholder="Username" />
             <input type="password" name="password" value={this.state.password} onChange={this.handleChange} placeholder="Password" />
             <input type="submit" value="Submit" onClick={this.handleSubmit}/>
-          </form>
-          <a href="http://localhost:3001/google/auth/login">Login with google</a>
+          </div>
+        </form>
+        <a href="http://localhost:3001/google/auth/login">Login with google</a>
       </div>
     )
   }

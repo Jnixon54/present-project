@@ -1,0 +1,147 @@
+body {
+  background-color: rgb(21, 32, 148);
+  transition: all .5s;
+
+  animation: 2.5s linear 0s 1 blurFocus;
+}
+/* animation-duration: 1s; the duration of the animation
+animation-timing-function: ease-out; how the animation will behave
+animation-delay: 0s; how long to delay the animation from starting
+animation-iteration-count: 1; how many times the animation will play
+animation-name: slideInFromLeft; the name of the animation we defined above */
+
+h1 {
+  color: white;
+  font-size: 100px;
+  letter-spacing: 5px;
+  margin: 0;
+}
+
+#title-highlight {
+  color: rgb(255, 0, 140);
+}
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+}
+
+.horizontal-line {
+  position: absolute;
+  z-index: 5;
+  width: 132px;
+  height: 2px;
+  background-color: white;
+}
+
+/* Tricks to base height off width percent */
+.vertical-line {
+  position: absolute;
+  z-index: 5;
+  width: 2px;
+  height: 132px;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+.line-1 {
+  top: 130px;
+  left: 0%;
+}
+.line-2 {
+  top: 130px;
+  right: 0%;
+}
+.line-3 {
+  bottom: 130px;
+  left: 0%;
+}
+.line-4 {
+  bottom: 130px;
+  right: 0%;
+}
+.line-5 {
+  top: 0%;
+  left: 130px;
+}
+.line-6 {
+  top: 0%;
+  right: 130px;
+}
+.line-7 {
+  bottom: 0%;
+  left: 130px;
+}
+.line-8 {
+  bottom: 0%;
+  right: 130px;
+}
+
+.box {
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  width: calc(100% - 202px);
+  height: calc(100% - 202px);
+  z-index: -1;
+  border: 2px solid white;
+}
+
+@keyframes blurFocus{
+  0% {
+    filter: blur(40px);
+  }
+  10% {
+    filter: blur(36px);
+  }
+  30% {
+    filter: blur(4px);
+  }
+  40% {
+    filter: none;
+  }
+  45%{
+    filter: blur(1px);
+  }
+  65% {
+    filter: blur(5px);
+  }
+  70% {
+    filter: blur(5px);
+  }
+  75% {
+    filter: blur(5px);
+  }
+  85% {
+    filter: blur(4px)
+  }
+  95% {
+    filter: blur(1px);
+  }
+  100% {
+    filter: blur(0px);
+  }
+}
+/* 
+@keyframes blurFocus {
+  0% {
+    filter: blur(10px);
+  }
+  40% {
+    filter: none;
+  }
+  65% {
+    filter: blur(2px);
+  }
+  100% {
+    filter: none;
+  } */
+/* } */
+@media (max-width: 1000px){
+  body{
+    background-color: black;
+
+  }
+}

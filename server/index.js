@@ -11,7 +11,7 @@ const google = require('googleapis')
 const passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy
     , GoogleStrategy = require('passport-google-oauth20').Strategy;
-const socket = require('socket.io');
+const socket = require('./socket-server/index');
 // CONTROLLERS
 const slides = require('./controllers/slides_controller');
 // DATABASE
@@ -50,8 +50,8 @@ passport.serializeUser(function(id, done) {
 });
 passport.deserializeUser((id, done) => {
   db.users.findOne({where: {id: id}}).then((user) => {
-    console.log('DESERIALIZE USER', user.id)
-    done(null, user.id);
+    console.log('DESERIALIZE USER', user)
+    done(null, user);
   }).catch(console.log);
 })
   // PASSPORT STRATEGIES
@@ -69,15 +69,15 @@ function(username, password, done){
       console.log('CREATED PASSWORD FOR USER: ', user.id);
     }
     console.log('LOCAL USER: ', user.id);
-    console.log('CREATED: ' + created)
+    console.log('CREATED: ' + created);
     return done(null, user.id);
-  }).catch((err) => {console.log('sdadsf');done(err)});
+  }).catch((err) => done(err));
 }))
 passport.use('google', new GoogleStrategy({ 
   clientID: GOOGLE_CLIENT_ID, 
   clientSecret: GOOGLE_CLIENT_SECRET,
   callbackURL: 'http://localhost:3001/google/auth/logincallback'
-},
+},  
 function(accessToken, refreshToken, profile, done){
   db.users.findOrCreate({where: {username: 'google|' + profile.id}}).spread((user, created) => {
     console.log('GOOGLE USER: ', user.dataValues.id)
@@ -90,11 +90,11 @@ function(accessToken, refreshToken, profile, done){
 // GOOGLE AUTH ENDPOINTS
 // app.get('/api/presentation/getpresentation/:id', isAuthed(google_auth_url));
 app.get('/api/presentation/getpresentation/:id', function(req, res, next){
-  console.log(req.session)
+  req.session.user = req.session.passport.user;
   req.session.presentation_id = req.params.id;
-  res.redirect(google_auth_url)}  );
+  res.redirect(google_auth_url)});
 app.get('/api/presentation/:id', slides.getPresentation,
-                                //  slides.storePresentation,
+                                 slides.storePresentation,
                                  slides.getSlideImage, 
                                  slides.storeSlides)
 // app.get('/api/presentation/getslide/', slides.getSlideImage);
@@ -112,8 +112,7 @@ app.get("/oauth2callback", function(req, res) {
 })
 //////////////////////////////////////////////////////////////////
 // LOGIN ENDPOINTS
-app.get('/google/auth/login', (req, res, next) => {console.log(req.session.user); next()},
-  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile']}))
+app.get('/google/auth/login', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile']}))
 app.get('/google/auth/logincallback', passport.authenticate('google', { 
   successRedirect: 'http://localhost:3000/',
   failureRedirect: 'http://localhost:3000/login',
@@ -140,43 +139,31 @@ app.post('/user', (req, res) => {
     .catch(console.log);
 })
 
-// app.post('/presentation', (req, res) => {
-//     owner_id = req.body.ownder_id;
-//     id_string = req.body.parent_presentation;
-//   db.presentations.create({
-//     owner_id,
-//     id_string
-//   }).then(newPresentation => res.send(newUser))
-//     .catch(console.log);
-// })
+app.post('/presentation', (req, res) => {
+    owner_id = req.body.owner_id;
+    id_string = req.body.id_string;
+  db.presentations.create({
+    owner_id,
+    id_string
+  }).then(newPresentation => res.send(newPresentation))
+    .catch(console.log);
+})
 
 app.post('/slide', (req, res) => {
   const slide_number = req.body.slide_number;
   const url = req.body.url;
   const parent_presentation = req.body.parent_presentation;
+  const parent_id = req.body.parent_id;
   db.slides.create({
     slide_number,
     url,
-    parent_presentation
+    parent_presentation,
+    parent_id
   }).then(newSlide => res.send(newSlide))
 })
 //////////////////////////////////////////////////////////////////
-// SOCKET SETUP
+// WEBSERVER INIT
 const server = app.listen(PORT, () => console.log(`Listening for socket connections on port ${PORT}`));
 
+// SOCKET INIT
 const io = socket(server);
-// io.on('connect', socket => {
-//   const socketID = socket.id;
-//   // const message = {text: 'Fucking sockets, man!'}
-//   // setInterval(() => {
-//   //   socket.emit('test', message);
-//   //   console.log('message emitted: ' + message.text)
-//   // }, 5000000);
-//   // console.log(`${socket.id} connected!`)
-//   socket.on('disconnect', (socket) => {
-//     // console.log(`${socketID} disconnected`);
-//   });
-
-// })
-
-// app.listen(PORT, () => console.log(`listening on port ${PORT}`));
