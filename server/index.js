@@ -46,15 +46,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 //////////////////////////////////////////////////////////////////
 // PERSISTENCE
-passport.serializeUser(function(id, done) {
-  console.log('SERIALIZE USER: ', id)
-  done(null, id);
+passport.serializeUser(function(user, done) {
+  console.log('SERIALIZE USER: ', user.id + ': ' + user.username)
+  done(null, user.id);
 });
 passport.deserializeUser(function(id, done) {
   db.users.findOne({where: {id: id}}).then((user) => {
     console.log('DESERIALIZE USER', user)
     done(null, user);
-  }).catch(console.log);
+  }).catch(err => done(err));
 })
   // PASSPORT STRATEGIES
 passport.use('local', new LocalStrategy(
@@ -72,7 +72,7 @@ function(username, password, done){
     }
     console.log('LOCAL USER: ', user.id);
     console.log('CREATED: ' + created);
-    return done(null, user.dataValues.id);
+    return done(null, user);
   }).catch((err) => done(err));
 }))
 passport.use('google', new GoogleStrategy({ 
@@ -84,7 +84,7 @@ function(accessToken, refreshToken, profile, done){
   db.users.findOrCreate({where: {username: 'google|' + profile.id}}).spread((user, created) => {
     console.log('GOOGLE USER: ', user.dataValues.id)
     console.log('GOOGLE CREATED: ', created)
-    return done(null, user.dataValues.id);
+    return done(null, user);
   }).catch((err) => done(err));
 }))
 //////////////////////////////////////////////////////////////////
