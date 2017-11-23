@@ -23,7 +23,7 @@ class Login extends Component {
     axios.post('http://localhost:3001/login', {
       username: this.state.username,
       password: this.state.password
-    }).then(response => console.log(response)).catch(console.log)
+    }).then(response => console.log('RESPONSE', response)).catch(console.log)
   }
   render(){
     console.log(this.state.username + ' ' + this.state.password)

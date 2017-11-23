@@ -7,6 +7,7 @@ module.exports = {
     axios.get(`https://slides.googleapis.com/v1/presentations/${presentationId}`, {
       headers: { Authorization: 'Bearer ' + req.session.tokens.access_token }
     }).then(result => {
+      console.log(result)
       for(let i = 0; i < result.data.slides.length; i++){
         slides_array.push({ presentationId: presentationId, 
                             objectId: result.data.slides[i].objectId})
@@ -17,7 +18,6 @@ module.exports = {
     }).catch(console.log);
   },
   storePresentation: function(req, res, next){
-    console.log('STORE', res.locals);
     axios.post('http://localhost:3001/presentation', { owner_id: req.session.user,
                                                        id_string: res.locals.presentationId
     }).then(response => {

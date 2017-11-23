@@ -2,6 +2,7 @@ const {PORT, DATABASE_URI, SESSION_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRE
 const express = require('express');
 const cors = require('cors');
 const {json} = require('body-parser');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const Sequelize = require('sequelize')
     , db = require('./config/db.js');
@@ -34,11 +35,12 @@ sequelize
 const app = express();
 app.use(cors());
 app.use(json());
+app.use(cookieParser(SESSION_SECRET));
 app.use(session({ // Must be used before passport.session()
   secret: SESSION_SECRET,
+  resave: true,
   saveUninitialized: false,
-  resave: false,
-  cookie: {maxAge: 10000}
+  cookie: { maxAge: 600000 }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -48,7 +50,7 @@ passport.serializeUser(function(id, done) {
   console.log('SERIALIZE USER: ', id)
   done(null, id);
 });
-passport.deserializeUser((id, done) => {
+passport.deserializeUser(function(id, done) {
   db.users.findOne({where: {id: id}}).then((user) => {
     console.log('DESERIALIZE USER', user)
     done(null, user);
@@ -64,13 +66,13 @@ function(username, password, done){
     }
     if (created){ 
       db.users.update({password: password}, {where: {id: user.id}})
-        .then(result => {if(result[0] === 1)console.log('CREATED PASSWORD FOR USER: ', user.id)})
+        .then(result => {if (result[0] === 1) console.log('CREATED PASSWORD FOR USER: ', user.id)})
         .catch(console.log);
       console.log('CREATED PASSWORD FOR USER: ', user.id);
     }
     console.log('LOCAL USER: ', user.id);
     console.log('CREATED: ' + created);
-    return done(null, user.id);
+    return done(null, user.dataValues.id);
   }).catch((err) => done(err));
 }))
 passport.use('google', new GoogleStrategy({ 
@@ -84,15 +86,16 @@ function(accessToken, refreshToken, profile, done){
     console.log('GOOGLE CREATED: ', created)
     return done(null, user.dataValues.id);
   }).catch((err) => done(err));
-}
-))
+}))
 //////////////////////////////////////////////////////////////////
 // GOOGLE AUTH ENDPOINTS
 // app.get('/api/presentation/getpresentation/:id', isAuthed(google_auth_url));
 app.get('/api/presentation/getpresentation/:id', function(req, res, next){
-  req.session.user = req.session.passport.user;
+  console.log('TEEEEST:', req);
+  req.session.user = req.user.id;
   req.session.presentation_id = req.params.id;
   res.redirect(google_auth_url)});
+  
 app.get('/api/presentation/:id', slides.getPresentation,
                                  slides.storePresentation,
                                  slides.getSlideImage, 
@@ -114,14 +117,14 @@ app.get("/oauth2callback", function(req, res) {
 // LOGIN ENDPOINTS
 app.get('/google/auth/login', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile']}))
 app.get('/google/auth/logincallback', passport.authenticate('google', { 
-  successRedirect: 'http://localhost:3000/',
+  successRedirect: 'http://localhost:3000/login',
   failureRedirect: 'http://localhost:3000/login',
-  failureflash: true}))
+  failureFlash: true}))
 
-app.get('/login', () => console.log('Login'))
+app.get('/login', )
 app.post('/login', passport.authenticate(['local'], { successRedirect: '/',
                                                       failureRedirect: '/login',
-                                                      failureflash: true }));
+                                                      failureFlash: true }));
 app.get('/signup', )
 app.post('/signup', )
 //////////////////////////////////////////////////////////////////

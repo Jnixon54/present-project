@@ -8,7 +8,7 @@ import {Provider} from 'react-redux';
 import store from './store';
 import startConnection from './connections';
 
-startConnection(store);
+// startConnection(store);
 
 ReactDOM.render(
 <Provider store={store}>
