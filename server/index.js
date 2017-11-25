@@ -2,7 +2,6 @@ const {PORT, DATABASE_URI, SESSION_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRE
 const express = require('express');
 const cors = require('cors');
 const {json} = require('body-parser');
-const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const Sequelize = require('sequelize')
     , db = require('./config/db.js');
@@ -35,7 +34,6 @@ sequelize
 const app = express();
 app.use(cors());
 app.use(json());
-app.use(cookieParser(SESSION_SECRET));
 app.use(session({ // Must be used before passport.session()
   secret: SESSION_SECRET,
   resave: true,
@@ -53,7 +51,10 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(id, done) {
   db.users.findOne({where: {id: id}}).then((user) => {
     console.log('DESERIALIZE USER', user)
-    done(null, user);
+    if (user) {
+      done(null, user);
+    }
+    done(null, false);
   }).catch(err => done(err));
 })
   // PASSPORT STRATEGIES
@@ -96,19 +97,20 @@ app.get('/api/presentation/getpresentation/:id', function(req, res, next){
   req.session.presentation_id = req.params.id;
   res.redirect(google_auth_url)});
   
-app.get('/api/presentation/:id', slides.getPresentation,
-                                 slides.storePresentation,
-                                 slides.getSlideImage, 
-                                 slides.storeSlides)
+app.get('/api/presentation/:id', ( req, res, next ) => {console.log("GET MIDDLEWARE", req.session);next()},
+                                  // slides.getPresentation,
+                                  slides.storePresentation,
+                                  slides.getSlideImage, 
+                                  slides.storeSlides)
 // app.get('/api/presentation/getslide/', slides.getSlideImage);
 app.get("/oauth2callback", function(req, res) {
   const code = req.query.code
   oauth2Client.getToken(code, function(err, tokens) {
     if (!err) {
-      oauth2Client.setCredentials(tokens)
-      req.session.tokens = tokens
-      res.redirect(`/api/presentation/${req.session.presentation_id}`)
-      return
+      oauth2Client.setCredentials(tokens);
+      req.session.tokens = tokens;
+      res.redirect(`/api/presentation/${req.session.presentation_id}`);
+      return;
     }
     res.status(500).send(err)
   })
@@ -117,14 +119,14 @@ app.get("/oauth2callback", function(req, res) {
 // LOGIN ENDPOINTS
 app.get('/google/auth/login', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile']}))
 app.get('/google/auth/logincallback', passport.authenticate('google', { 
-  successRedirect: 'http://localhost:3000/login',
+  // successRedirect: 'http://localhost:3000/login',
   failureRedirect: 'http://localhost:3000/login',
-  failureFlash: true}))
+  failureFlash: true}), (req, res, next) => {console.log(req);res.redirect('http://localhost:3000/home'); next();})
 
-app.get('/login', )
-app.post('/login', passport.authenticate(['local'], { successRedirect: '/',
-                                                      failureRedirect: '/login',
-                                                      failureFlash: true }));
+app.get('/login')
+app.post( '/login', passport.authenticate( ['local'], { failureRedirect: '/login',
+                                                        failureFlash: true } ),
+                    (req, res, next) => {console.log(req.user);res.redirect('/login'); next();});
 app.get('/signup', )
 app.post('/signup', )
 //////////////////////////////////////////////////////////////////
@@ -138,8 +140,7 @@ app.post('/user', (req, res) => {
     //                       username: newUser.dataValues.username};
     // }
     // console.log(req.session)
-    res.send(newUser)})
-    .catch(console.log);
+    res.send(newUser)}).catch(console.log);
 })
 
 app.post('/presentation', (req, res) => {
@@ -162,7 +163,7 @@ app.post('/slide', (req, res) => {
     url,
     parent_presentation,
     parent_id
-  }).then(newSlide => res.send(newSlide))
+  }).then(newSlide => res.send(newSlide)).catch(console.log);
 })
 //////////////////////////////////////////////////////////////////
 // WEBSERVER INIT

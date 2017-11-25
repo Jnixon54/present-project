@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 // import axios from 'axios';
-import HomePage from './components/HomePage';
-import ImportSlides from './components/ImportSlides';
+import LandingPage from './LandingPage';
+import ImportSlides from './ImportSlides';
 
 
 class App extends Component {
@@ -45,7 +45,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="container">
-          <HomePage />
+          <LandingPage />
           <ImportSlides handleImport={this.handleImport}/>
         </div>
       </div>

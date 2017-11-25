@@ -2,7 +2,7 @@ body {
   background-color: rgb(21, 32, 148);
   transition: all .5s;
 
-  animation: 2.5s linear 0s 1 blurFocus;
+  /* animation: 2.5s linear 0s 1 blurFocus; */
 }
 /* animation-duration: 1s; the duration of the animation
 animation-timing-function: ease-out; how the animation will behave
