@@ -92,36 +92,37 @@ function(accessToken, refreshToken, profile, done){
 // GOOGLE AUTH ENDPOINTS
 // app.get('/api/presentation/getpresentation/:id', isAuthed(google_auth_url));
 app.get('/api/presentation/getpresentation/:id', function(req, res, next){
-  console.log('TEEEEST:', req);
+  // console.log('TEEEEST:', req);
   req.session.user = req.user.id;
   req.session.presentation_id = req.params.id;
   res.redirect(google_auth_url)});
   
 app.get('/api/presentation/:id', ( req, res, next ) => {console.log("GET MIDDLEWARE", req.session);next()},
-                                  // slides.getPresentation,
+                                  slides.getPresentation,
                                   slides.storePresentation,
                                   slides.getSlideImage, 
                                   slides.storeSlides)
 // app.get('/api/presentation/getslide/', slides.getSlideImage);
-app.get("/oauth2callback", function(req, res) {
+app.get('/oauth2callback', function(req, res) {
   const code = req.query.code
   oauth2Client.getToken(code, function(err, tokens) {
     if (!err) {
       oauth2Client.setCredentials(tokens);
       req.session.tokens = tokens;
       res.redirect(`/api/presentation/${req.session.presentation_id}`);
-      return;
+      return
     }
-    res.status(500).send(err)
+    res.status(500).send(err);
   })
 })
 //////////////////////////////////////////////////////////////////
 // LOGIN ENDPOINTS
-app.get('/google/auth/login', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile']}))
+app.get('/google/auth/login', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile',
+                                                                        'https://www.googleapis.com/auth/presentations.readonly']}))
 app.get('/google/auth/logincallback', passport.authenticate('google', { 
   // successRedirect: 'http://localhost:3000/login',
   failureRedirect: 'http://localhost:3000/login',
-  failureFlash: true}), (req, res, next) => {console.log(req);res.redirect('http://localhost:3000/home'); next();})
+  failureFlash: true}), (req, res, next) => {console.log(req);res.redirect(`http://localhost:3000/home/${req.user.id}`); next();})
 
 app.get('/login')
 app.post( '/login', passport.authenticate( ['local'], { failureRedirect: '/login',
@@ -150,6 +151,22 @@ app.post('/presentation', (req, res) => {
     owner_id,
     id_string
   }).then(newPresentation => res.send(newPresentation))
+    .catch(console.log);
+})
+
+app.get('/user_presentations/:id', (req, res) => {
+  owner_id = req.params.id;
+  db.presentations.findAll({ where: { owner_id: owner_id,
+                                      id_string: {$ne: null} }
+  }).then(data => res.send(data))
+    .catch(console.log);
+
+})
+
+app.get('/slides/:parent_id', (req, res) => {
+  const parent_id = req.params.parent_id;
+  db.slides.findAll({where: {parent_id}})
+    .then(data => res.send(data))
     .catch(console.log);
 })
 

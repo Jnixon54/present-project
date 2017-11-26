@@ -5,7 +5,8 @@ class ImportSlides extends Component {
     super(props);
     this.state = {
       value: '',
-      redirect: false
+      redirect: false,
+      presentation_id: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -17,8 +18,22 @@ class ImportSlides extends Component {
 
   handleSubmit(event){
     event.preventDefault();
-    this.props.handleImport(this.state.value);
+    this.handleImport(this.state.value);
     
+  }
+
+  handleImport(originalUrl){
+    let url = '';
+    try{
+      url = new URL(originalUrl);
+      this.setState({presentation_id: url.pathname.split('/')[3]}, () => {
+        window.location.href=`http://localhost:3001/api/presentation/getPresentation/${this.state.presentation_id}`;
+      })
+    }
+    catch(err) {
+      alert('Please enter a valid URL.')
+      console.log(err);
+    }
   }
 
   render () {

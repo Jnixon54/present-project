@@ -6,8 +6,7 @@ const PORT = 3001;
 
 export default function(store) {
   const socket = io.connect(`${location.protocol}//${location.hostname}:${PORT}`);
-
-  console.log(socket)
+  console.log(socket);
 }
 
 // houses the socket client 

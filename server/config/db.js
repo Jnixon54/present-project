@@ -22,9 +22,9 @@ db.presentations = require('../models/presentations.js')(sequelize, Sequelize);
 db.slides = require('../models/slides.js')(sequelize, Sequelize);
 
 // Relations
-db.users        .hasMany(db.presentations);
-db.presentations.belongsTo(db.users);
-db.presentations.hasMany(db.slides);
-db.slides       .belongsTo(db.presentations);
+// db.users        .hasMany(db.presentations);
+// db.presentations.belongsTo(db.users);
+// db.presentations.hasMany(db.slides);
+// db.slides       .belongsTo(db.presentations);
 
 module.exports = db;

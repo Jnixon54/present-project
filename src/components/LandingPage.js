@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Login from './Login';
-import './HomePage.css';
-class HomePage extends Component {
+import './LandingPage.css';
+class LandingPage extends Component {
   render () {
     return (
       <div className="home-container">
@@ -23,4 +23,4 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage
+export default LandingPage
