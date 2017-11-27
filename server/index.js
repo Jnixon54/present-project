@@ -2,7 +2,7 @@ const {PORT, DATABASE_URI, SESSION_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRE
 const express = require('express');
 const cors = require('cors');
 const {json} = require('body-parser');
-const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const Sequelize = require('sequelize')
     , db = require('./config/db.js');
@@ -35,7 +35,7 @@ sequelize
 const app = express();
 app.use(cors());
 app.use(json());
-app.use(cookieParser(SESSION_SECRET));
+// app.use(cookieParser(SESSION_SECRET));
 app.use(session({ // Must be used before passport.session()
   secret: SESSION_SECRET,
   resave: true,
