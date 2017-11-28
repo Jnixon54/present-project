@@ -46,15 +46,15 @@ app.use(passport.session());
 // PERSISTENCE
 passport.serializeUser(function(user, done) {
   console.log('SERIALIZE USER: ', user.id + ': ' + user.username)
-  done(null, user.id);
+  return done(null, user.id);
 });
 passport.deserializeUser(function(id, done) {
   db.users.findOne({where: {id: id}}).then((user) => {
     console.log('DESERIALIZE USER', user)
     if (user) {
-      done(null, user);
+      return done(null, user);
     }
-    done(null, false);
+    return done(null, false);
   }).catch(err => done(err));
 })
   // PASSPORT STRATEGIES
@@ -95,7 +95,9 @@ app.get('/api/presentation/getpresentation/:id', function(req, res, next){
   // console.log('TEEEEST:', req);
   req.session.user = req.user.id;
   req.session.presentation_id = req.params.id;
-  res.redirect(google_auth_url)});
+  res.redirect(google_auth_url);
+  return;
+});
   
 app.get('/api/presentation/:id', ( req, res, next ) => {console.log("GET MIDDLEWARE", req.session);next()},
                                   slides.getPresentation,
@@ -103,26 +105,28 @@ app.get('/api/presentation/:id', ( req, res, next ) => {console.log("GET MIDDLEW
                                   slides.getSlideImage, 
                                   slides.storeSlides)
 // app.get('/api/presentation/getslide/', slides.getSlideImage);
-app.get('/oauth2callback', function(req, res) {
+app.get("/oauth2callback", function(req, res) {
   const code = req.query.code
   oauth2Client.getToken(code, function(err, tokens) {
     if (!err) {
       oauth2Client.setCredentials(tokens);
       req.session.tokens = tokens;
       res.redirect(`/api/presentation/${req.session.presentation_id}`);
-      return
+      return;
+    } else {
+      res.status(500).send(err)
     }
-    res.status(500).send(err);
   })
 })
+
 //////////////////////////////////////////////////////////////////
 // LOGIN ENDPOINTS
 app.get('/google/auth/login', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile',
                                                                         'https://www.googleapis.com/auth/presentations.readonly']}))
 app.get('/google/auth/logincallback', passport.authenticate('google', { 
-  // successRedirect: 'http://localhost:3000/login',
+  // successRedirect: `http://localhost:3000/home/${user.id}`,
   failureRedirect: 'http://localhost:3000/login',
-  failureFlash: true}), (req, res, next) => {console.log(req);res.redirect(`http://localhost:3000/home/${req.user.id}`); next();})
+  failureFlash: true}), (req, res, next) => {res.redirect(`http://localhost:3000/home/${req.user.id}`);return;})
 
 app.get('/login')
 app.post( '/login', passport.authenticate( ['local'], { failureRedirect: '/login',

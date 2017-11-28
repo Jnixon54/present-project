@@ -1,25 +1,32 @@
 const initialState = {
-  
+    currentSlide: 0
+}
+
+// Action type
+
+
+// Reducer
+function reducer(state = initialState, action){
+  switch(action.type){
+    case 'ADVANCE_SLIDE':
+      return {...state, currentSlide: state.currentSlide + 1};
+    case 'RETURN_SLIDE':
+      return {...state, returnSlide: state.currentSlide - 1};
+    default: return state;
   }
-  
-  // Action type
-  
-  
-  // Reducer
-  function reducer(state = initialState, action){
-    switch(action.type){
-      // case :
-      // return {...state, changingVar: action.payload}
-      default: return state;
-    }
+}
+
+// Actions
+export function advanceSlide(){
+  return {
+    type: 'ADVANCE_SLIDE'
   }
-  
-  // Actions
-  // export function updatesomething(data){
-  //   return {
-  //     type: SOMETHING,
-  //     payload: data
-  //   }
-  // }
-  
-  export default reducer;
+}
+
+export function returnSlide(){
+  return {
+    type: 'RETURN_SLIDE'
+  }
+}
+
+export default reducer;

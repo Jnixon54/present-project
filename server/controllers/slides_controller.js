@@ -59,6 +59,10 @@ module.exports = {
       );
     }
     axios.all(promises).catch(console.log)
-    res.redirect('http://localhost:3000/')
+    if (req.session.user) {
+      return res.redirect(`http://localhost:3000/home/${req.session.user}`);
+    } else {
+      return res.redirect(`http://localhost:3000/`);
+    }
   }
 }

@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      presentation_id: '',
+      
 
     };
     this.handleImport = this.handleImport.bind(this);
@@ -46,7 +46,7 @@ class App extends Component {
       <div className="App">
         <div className="app-container">
           <LandingPage />
-          <ImportSlides handleImport={this.handleImport}/>
+          <ImportSlides />
         </div>
       </div>
     );

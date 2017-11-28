@@ -9,5 +9,4 @@ export default function(store) {
   console.log(socket);
 }
 
-// houses the socket client 
-// events that dispatch actions to the reducer2
+// houses the socket client events that dispatch actions to the reducer

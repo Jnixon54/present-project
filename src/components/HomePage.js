@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import './HomePage.css';
 import ImportSlides from './ImportSlides';
-import startConnection from '../connections';
-import store from '../store';
+// import startConnection from '../connections';
+// import store from '../store';
 import {connect} from 'react-redux';
 import {setSocketID, setUserID} from '../ducks/userReducer';
 import axios from 'axios';
@@ -59,7 +59,7 @@ class HomePage extends Component {
       for (let j = 0; j < arr[i].length; j++){
         if (arr[i][j].slide_number === 1) {
           console.log(arr[i][j].url);
-          icons.push(<img src={arr[i][j].url} alt="alt" />)
+          icons.push(<div className="slide-container"><img src={arr[i][j].url} alt={JSON.stringify(arr[i][j].parent_id)} /></div>)
         }
       }
     }
@@ -70,25 +70,24 @@ class HomePage extends Component {
     return (
       <div className="container">
         <div className="left-container">
-          <h2>
-            user : {this.props.userID}
-            {/* socketID : {this.props.socketID} */}
-            Import Presentation
-          </h2>
+          <h1>
+            Import
+          </h1>
           <ImportSlides />
         </div>
         <div className="right-container">
           <h1>
             Presentations
           </h1>
-          {
-            icons
-          }
+          <div className="presentations">
+          { icons }
+          </div>
         </div>
       </div>
     )
   }
 }
+
 function mapStateToProps(state){
   return {
     userID: state.userID,
@@ -96,4 +95,4 @@ function mapStateToProps(state){
   }
 }
 
-export default connect(mapStateToProps, {setUserID, setSocketID})(HomePage)
+export default connect(mapStateToProps, { setUserID, setSocketID })(HomePage)
