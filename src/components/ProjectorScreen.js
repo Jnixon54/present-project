@@ -9,6 +9,7 @@ class ProjectorScreen extends Component {
 
   componentDidMount() {
     //Link client ID to projector ID
+    
   }
 
   render () {

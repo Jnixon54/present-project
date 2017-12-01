@@ -1,4 +1,7 @@
-import {createStore} from 'redux';
-import reducer from './ducks/index';
+import {createStore, applyMiddleware} from 'redux';
+import reducers from './ducks/index';
+import {socketMiddleware} from './connections';
 
-export default createStore(reducer);
+// const initialState = window.INITIAL_STATE;
+const createStoreWithMiddleware = applyMiddleware(socketMiddleware)(createStore);
+export default createStoreWithMiddleware(reducers);

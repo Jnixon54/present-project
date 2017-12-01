@@ -21,6 +21,9 @@ const sequelize = new Sequelize(DATABASE_URI, {
   }
 });
 
+const activeRooms = [];
+
+
 sequelize
 .authenticate()
 .then(() => {
@@ -186,6 +189,24 @@ app.post('/slide', (req, res) => {
     parent_id
   }).then(newSlide => res.send(newSlide)).catch(console.log);
 })
+//////////////////////////////////////////////////////////////////
+// CLASSROOM ENDPOINTS
+app.get('/openClassroom/:id', (req, res) => {
+  activeRooms.push({
+    id: req.params.id,
+    password: req.body.password,
+    owner: req.user.id});
+  console.log(activeRooms);
+})
+
+app.get('/closeClassroom/:id', (req, res) => {
+  const roomIndex = activeRooms.findIndex((room) => {
+    return room.id === req.params.id
+  })
+  const room = activeRooms[roomIndex];
+  if (room.owner === req.user.id) activeRooms.splice(roomIndex, 1);
+})
+
 //////////////////////////////////////////////////////////////////
 // WEBSERVER INIT
 const server = app.listen(PORT, () => console.log(`Listening for socket connections on port ${PORT}`));
