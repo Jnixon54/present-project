@@ -11,6 +11,7 @@ import startConnection from './connections';
 import HomePage from './components/HomePage';
 import ProjectorScreen from './components/ProjectorScreen';
 import PresenterScreen from './components/PresenterScreen';
+import PresentationPreview from './components/PresentationPreview';
 
 startConnection(store);
 
@@ -21,8 +22,10 @@ ReactDOM.render(
     <Route exact path="/" component={App} />
     <Route exact path="/home" component={HomePage} />
     <Route path="/home/:id" component={HomePage} />
-    <Route path="/projector" component={ProjectorScreen} />
     <Route path="/presenter" component={PresenterScreen} />
+    <Route exact path="/presentation/:id" component={PresentationPreview} />
+    <Route path="/presentation/:id/projector" component={ProjectorScreen} />
+    <Route path="/presentation/:id/presenter" component={PresenterScreen} />
   </Switch>
   </BrowserRouter>
 </Provider>

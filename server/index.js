@@ -189,6 +189,15 @@ app.post('/slide', (req, res) => {
     parent_id
   }).then(newSlide => res.send(newSlide)).catch(console.log);
 })
+app.get('/slide/:presentation/:id', (req, res) => {
+  const presentationID = req.params.presentation;
+  const slideNumber = req.params.id;
+  db.slides.findOne({
+    where: { parent_id: presentationID,
+             slide_number: slideNumber }
+  }).then(slide => res.send(slide)).catch(console.log);
+})
+
 //////////////////////////////////////////////////////////////////
 // CLASSROOM ENDPOINTS
 app.get('/openClassroom/:id', (req, res) => {

@@ -1,0 +1,27 @@
+/* body {
+  background-color: black;
+} */
+
+.big-slide {
+  
+  /* display: flex; */
+  /* justify-content: center; */
+  width: 100%;
+  /* max-width: 100vwz; */
+  height: 100vh;
+  /* max-height: 100vh; */
+  /* max-height: 100vh; */
+  background-color: black;
+  color: white;
+}
+
+.big-slide img {
+  display: block;
+  margin: auto;
+  /* display: inline-block; */
+  /* width: 100%; */
+  /* margin: 0 auto; */
+  /* padding: 20px; */
+  max-width: 100%;
+  max-height: 100vh;
+}

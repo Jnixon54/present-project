@@ -1,0 +1,16 @@
+.slides-container {
+  display: flex;
+  width: 100%
+}
+.current-slide {
+  width: 66%
+}
+.current-slide img{
+  width: 100%
+}
+.preview-slide {
+  width: 33%
+}
+.preview-slide img {
+  width: 100%
+}

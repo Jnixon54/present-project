@@ -6,6 +6,7 @@ import ImportSlides from './ImportSlides';
 import {connect} from 'react-redux';
 import {setSocketID, setUserID} from '../ducks/userReducer';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 
 class HomePage extends Component {
   constructor(props) {
@@ -59,7 +60,10 @@ class HomePage extends Component {
       for (let j = 0; j < arr[i].length; j++){
         if (arr[i][j].slide_number === 1) {
           console.log(arr[i][j].url);
-          icons.push(<div className="slide-container"><img src={arr[i][j].url} alt={JSON.stringify(arr[i][j].parent_id)} /></div>)
+          icons.push(
+          <Link to={`/presentation/${arr[i][j].parent_id}`}>
+            <div className="slide-container"><img src={arr[i][j].url} alt={JSON.stringify(arr[i][j].parent_id)} /></div>
+          </Link>)
         }
       }
     }
