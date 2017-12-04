@@ -4,25 +4,31 @@ const axios = require('axios');
 module.exports = function(server){
   const io = socketServer(server);
   let userCount = 0;
+  let currentSlideURL = '';
   io.on('connect', socket => {
     const socketID = socket.id;
     console.log(`CONNECTED: ${socketID} CONNECTED USERS: ${userCount}`);
     userCount += 1;
+    console.log('Testing Connect')
+    socket.emit('update_client', {currentSlideURL: currentSlideURL})
 
     socket.on('advance_slide', (data) => {
       console.log('Current Presentation: ' + data.currentPresentation)
       let slideURL = '';
       const promises = [];
-
+      
       for (let i = 0; i <= 1; i++) {
         promises.push(axios.get(`http://localhost:3001/slide/${data.currentPresentation}/${data.currentSlide + i}`)
         // io.emit('update_client', {...data, currentSlideURL: result.data.url});
         )
       }
-      axios.all(promises).then( results =>
+      axios.all(promises).then( results => {
         // console.log('RESULT 0', results[0].data)
+        currentSlideURL = results[0].data.url;
+        
         io.emit('update_client', {...data, currentSlideURL: results[0].data.url, nextSlideURL: results[1].data.url})
-      ).catch(console.log);
+        return
+      }).catch(console.log);
       // socket.broadcast.emit('update_client', {...data, currentSlideURL: slideURL});
     });
 
@@ -46,6 +52,9 @@ module.exports = function(server){
     socket.on('return_slide', (data) => {
       console.log('Current Slide: ' + data.currentSlide)
       let slideURL = '';
+      currentSlide = data.currentSlide;
+      console.log(currentSlide)
+      
       axios.get(`http://localhost:3001/slide/${data.currentPresentation}/${data.currentSlide}`).then(result => {
         console.log('Update: ' + result.data.slide_number)
         io.emit('update_client', {...data, currentSlideURL: result.data.url});

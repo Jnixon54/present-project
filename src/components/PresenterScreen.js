@@ -14,17 +14,15 @@ class PresenterScreen extends Component {
   }
 
   render () {
-    // console.log(this.props.currentSlide);
-    console.log('CURRENT PRES: ' + this.props.currentPresentation)
     const currentSlide = this.props.slideArray.find(item => item.slide_number === this.props.currentSlide);
     const nextSlide = this.props.slideArray.find(item => item.slide_number === this.props.currentSlide + 1);
-    console.log(this.props.slideArray)
-    console.log(typeof currentSlide)
-    console.log(nextSlide);
+
+    const displayCurrentSlide = (this.props.currentSlide > 0 && currentSlide) ? <img src={currentSlide.url} alt="current slide" /> : <p>Hello</p>
+    const displayNextSlide = nextSlide ? <img src={nextSlide.url} alt="next slide" /> : <p>Hello</p>
+
     return (
       <div>
-        { this.props.currentPresentation} - 
-        { this.props.currentSlide }
+        { this.props.currentPresentation} - { this.props.currentSlide }
         <button onClick={this.props.returnSlide}>
           Previous Slide
         </button>
@@ -33,10 +31,10 @@ class PresenterScreen extends Component {
         </button>
         <div className="slides-container">
           <div className="current-slide">
-            { (this.props.currentSlide > 0 && currentSlide) ? <img src={currentSlide.url} alt="current slide" /> : <p>Hello</p>}
+            { displayCurrentSlide }
           </div>
           <div className="preview-slide">
-            { nextSlide ? <img src={nextSlide.url} alt="next slide" /> : <p>Hello</p>}
+            { displayNextSlide }
           </div>
         </div>
       </div>

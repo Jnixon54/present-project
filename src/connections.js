@@ -34,6 +34,7 @@ export default function(store) {
 
   socket.on('update_client', (data) => {
     store.dispatch(presentationActions.updateClientSlideshow(data));
+    console.log('UPDATING CLEIIIIIIIIIIIIIIIIIII')
     // console.log('TESTING SOCKETS RECEIVE', data);
   })
 
