@@ -83,7 +83,7 @@ function(username, password, done){
 passport.use('google', new GoogleStrategy({ 
   clientID: GOOGLE_CLIENT_ID, 
   clientSecret: GOOGLE_CLIENT_SECRET,
-  callbackURL: 'http://162.243.185.115.xip.io:3001/google/auth/logincallback'
+  callbackURL: 'http://162.243.186.115.xip.io:3001/google/auth/logincallback'
 },  
 function(accessToken, refreshToken, profile, done){
   db.users.findOrCreate({where: {username: 'google|' + profile.id}}).spread((user, created) => {
