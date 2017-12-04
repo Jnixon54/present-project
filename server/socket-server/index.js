@@ -32,12 +32,7 @@ module.exports = function(server){
       // socket.broadcast.emit('update_client', {...data, currentSlideURL: slideURL});
     });
 
-    socket.on('update_slides_array', (data) => {
-      axios.get(`http://localhost:3001/slides/${data.currentPresentation}`).then( result => {
-        console.log('TESTINGTERETER', result.data);
-        io.emit('update_client_presentation_array', result.data)
-      }).catch(console.log)
-    });
+    
 
     // socket.on('advance_slide', (data) => {
     //   console.log('Current Presentation: ' + data.currentPresentation)
@@ -54,7 +49,7 @@ module.exports = function(server){
       let slideURL = '';
       currentSlide = data.currentSlide;
       console.log(currentSlide)
-      
+    
       axios.get(`http://localhost:3001/slide/${data.currentPresentation}/${data.currentSlide}`).then(result => {
         console.log('Update: ' + result.data.slide_number)
         io.emit('update_client', {...data, currentSlideURL: result.data.url});
@@ -62,6 +57,16 @@ module.exports = function(server){
       // socket.broadcast.emit('update_client', data);
     });
 
+    socket.on('update_slides_array', (data) => {
+      axios.get(`http://localhost:3001/slides/${data.currentPresentation}`).then( result => {
+        console.log('TESTINGTERETER', result.data);
+        io.emit('update_client_presentation_array', result.data)
+      }).catch(console.log)
+    });
+
+    socket.on('submit_question', (data) => {
+      io.emit('update_questions', data)
+    })
     socket.on('disconnect', (socket) => {
       console.log(`DISCONNECTED: ${socketID} CONNECTED USER: ${userCount}`);
       userCount -= 1;

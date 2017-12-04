@@ -1,5 +1,6 @@
 const initialState = {
-  questionInputValue: ''
+  questionInputValue: '',
+  questions: []
 }
 
 // Action type
@@ -12,6 +13,8 @@ function reducer(state = initialState, action){
       return {...state, questionInputValue: action.input}
     case 'SUBMIT_QUESTION':
       return {...state, questionInputValue: ''}
+    case 'UPDATE_QUESTIONS':
+      return {...state, questions: [...state.questions, { slideNumber: action.slideNumber, question: action.question }]}
     default: 
       return state;
   }
@@ -24,11 +27,16 @@ export function updateInput(input){
     input
   }
 }
-
 export function submitQuestion(){
   return {
     type: 'SUBMIT_QUESTION'
   }
 }
-
+export function updateQuestions(data){
+  return {
+    type: 'UPDATE_QUESTIONS',
+    question: data.question,
+    slideNumber: data.slideNumber
+  }
+}
 export default reducer;

@@ -14,6 +14,7 @@ class PresenterScreen extends Component {
   }
 
   render () {
+    console.log(this.props.questions)
     const currentSlide = this.props.slideArray.find(item => item.slide_number === this.props.currentSlide);
     const nextSlide = this.props.slideArray.find(item => item.slide_number === this.props.currentSlide + 1);
 
@@ -49,7 +50,8 @@ function mapStateToProps(state){
     currentSlideURL: state.presentation.currentSlideURL,
     currentPresentation: state.presentation.currentPresentation,
     nextSlideURL: state.presentation.nextSlideURL,
-    slideArray: state.presentation.slideArray
+    slideArray: state.presentation.slideArray,
+    questions: state.student.questions
   }
 }
 
