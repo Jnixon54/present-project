@@ -58,3 +58,9 @@
 .current-slide-questions p span {
   color: rgb(255, 0, 140);
 }
+
+@media (max-width: 800px) {
+  .slideshow-buttons {
+    bottom: 5px;
+  }
+}
