@@ -35,6 +35,7 @@ sequelize
 //////////////////////////////////////////////////////////////////
 // App Setup
 const app = express();
+app.use( express.static( `${__dirname}/../build` ) );
 app.use(cors());
 app.use(json());
 app.use(session({ // Must be used before passport.session()
@@ -222,3 +223,8 @@ const server = app.listen(PORT, () => console.log(`Listening for socket connecti
 
 // SOCKET INIT
 const io = socket(server);
+
+const path = require('path')
+app.get('*', (req, res)=>{
+  res.sendFile(path.join(__dirname, '../build/index.html'));
+})
