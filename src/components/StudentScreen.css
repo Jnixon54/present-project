@@ -1,4 +1,13 @@
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
 .student-toolbar{
+  display: flex;
+  justify-content: center;
   position: absolute;
   bottom: 20px;
   left: 0;
@@ -12,6 +21,43 @@
   border-radius: 4px;
   box-shadow: 0px 3px 10px 1px rgba(0,0,0,0.6);
   background: linear-gradient(to bottom, rgb(42, 43, 46) 0%, rgb(14, 17, 19) 100%);
+}
+.student-toolbar form {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.student-input {
+  margin-right: auto;
+  margin-left: 20px;
+  height: 60%;
+  width: calc(100% - 80px);
+  justify-items: center;
+  border-bottom: 1px solid rgb(255, 0, 140);  
+}
+.student-input input{
+  position: absolute;
+  font-size: 16px;
+  bottom: 35px;
+  padding: 0;
+  color: white;
+  background: transparent;
+  margin-right: auto;
+  width: calc(100% - 100px);
+  border: none;  
+}
+.student-submit {
+  width: 80px;
+  margin-left: auto;
+  
+}
+.student-submit input {
+  font-size: 20px;
+  height: 100%;
+  width: 100%;
+  color: white;
+  background: transparent;
+  border: none;
 }
 
 /* .student-toolbar:hover{

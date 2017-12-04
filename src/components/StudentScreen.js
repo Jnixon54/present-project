@@ -28,8 +28,12 @@ class StudentScreen extends Component {
         <div className="outer">
         <div className="student-toolbar">
           <form>
-            <input type="text" value={this.props.questionInputValue} onChange={e => {this.props.updateInput(e.target.value)}} placeholder="Ask a question" />
-            <input type="submit" value="Ask" onClick={e => this._onSubmit(e)}/>
+            <div className="student-input" >
+              <input type="text" value={this.props.questionInputValue} onChange={e => {this.props.updateInput(e.target.value)}} placeholder="Ask a question" />
+            </div>
+            <div className="student-submit" >
+              <input type="submit" value="Ask!" onClick={e => this._onSubmit(e)}/>
+            </div>
           </form>
         </div>
         </div>
