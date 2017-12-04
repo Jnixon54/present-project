@@ -5,7 +5,7 @@ import './ProjectorScreen.css'
 
 class ProjectorScreen extends Component {
   render () {
-    const slide = this.props.currentSlideURL ? <img src={this.props.currentSlideURL} alt="" /> : <div className="student-link">{'Link: ' + `http://localhost:3000/presentation/${this.props.match.params.id}/student`}</div>;
+    const slide = this.props.currentSlideURL ? <img src={this.props.currentSlideURL} alt="" /> : <div className="student-link">{'Link: ' + `http://162.243.186.115.xip.io:3001/presentation/${this.props.match.params.id}/student`}</div>;
     // const currentSlide = this.props.slideArray.find(item => item.slide_number === this.props.currentSlide);
     // const slide = currentSlide ? <img src={currentSlide.url} alt="img" /> : 'Connection Info';
     console.log('Slide array length', this.props.slideShowLength)

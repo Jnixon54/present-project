@@ -6,7 +6,7 @@ import './DataScreen.css'
 
 class DataScreen extends Component {
   render () {
-    const numberOfSlides = this.props.slideArray.length;
+    const numberOfSlides = this.props.slideShowLength;
     const slideLabels = []
     const questionsPerSlide = [];
     for (let i = 1; i <= numberOfSlides; i++){
@@ -82,7 +82,8 @@ class DataScreen extends Component {
 function mapStateToProps(state) {
   return {
     questions: state.student.questions,
-    slideArray: state.presentation.slideArray
+    slideArray: state.presentation.slideArray,
+    slideShowLength: state.presentation.slideShowLength
   }
 }
 
