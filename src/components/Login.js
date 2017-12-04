@@ -29,7 +29,7 @@ class Login extends Component {
     console.log(this.state.username + ' ' + this.state.password)
     return (
       <div className="login-wrapper" >
-        <a className="google-login" href="http://localhost:3001/google/auth/login">Login with google</a>
+        <a className="google-login" href="http://162.243.186.115:3001/google/auth/login">Login with google</a>
       <div className="localLogin">
         <form>
           <div >
