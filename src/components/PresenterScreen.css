@@ -9,8 +9,52 @@
   width: 100%
 }
 .preview-slide {
+  height: 50%;
   width: 33%
 }
 .preview-slide img {
   width: 100%
+}
+.slideshow-buttons {
+  position: absolute;
+  bottom: 100px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-size: 30px;
+}
+
+.slideshow-buttons button{
+
+  font-size: 24px;
+  /* bottom: 30px; */
+  padding: 0;
+  color: white;
+  background: transparent;
+  margin-right: auto;
+  width: calc(100%);
+  border: none;  
+  cursor: pointer;
+}
+
+.slide-number {
+  width: 50px;
+  height: 40px;
+}
+
+.current-slide-questions {
+  overflow-y: auto;
+  height: 300px;
+  padding-left: 15px;
+  color: white;
+}
+
+.current-slide-questions p {
+  margin: 2px;
+  word-wrap: break-word;
+}
+
+.current-slide-questions p span {
+  color: rgb(255, 0, 140);
 }

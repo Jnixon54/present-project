@@ -1,5 +1,6 @@
 body {
-  background-color: rgb(21, 51, 148);
+  /* background-color: rgb(21, 51, 148); */
+  background-color: black;
   transition: all .5s;
 
   /* animation: 2.5s linear 0s 1 blurFocus; */

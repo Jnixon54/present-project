@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './ImportSlides.css';
 
 class ImportSlides extends Component {
   constructor(props) {
@@ -38,12 +39,15 @@ class ImportSlides extends Component {
 
   render () {
     return (
-      <div>
+      <div className="import">
         <form>
-          <input type="url" value={this.state.value} onChange={this.handleChange}placeholder="https://docs.google.com/presentation/d/..." />
-          <input type="submit" value="Import" onClick={this.handleSubmit}/>
+          <div className="import-input">
+            <input type="url" value={this.state.value} onChange={this.handleChange}placeholder="https://docs.google.com/presentation/d/..." />
+          </div>
+          <div className="import-submit">
+            <input type="submit" value="Import" onClick={this.handleSubmit}/>
+          </div>
         </form>
-        https://docs.google.com/presentation/d/1oCNQlcuNkiRwJu660XBnvZTHYdEOqw4DIJzPvOv85ek/edit#slide=id.gc6f972163_0_0
       </div>
     )
   }

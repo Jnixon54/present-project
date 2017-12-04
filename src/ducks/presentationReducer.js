@@ -5,7 +5,8 @@ const initialState = {
     currentSlideURL: '',
     nextSlideURL: '',
     slideArray: [],
-    slidePreviewIsLoading: false
+    slidePreviewIsLoading: false,
+    slideShowLength: 0
 }
 
 // Action type
@@ -23,16 +24,19 @@ function reducer(state = initialState, action){
     case 'UPDATE_CLIENT':
       return {...state, currentSlide: action.currentSlide, 
                         currentSlideURL: action.currentSlideURL, 
-                        nextSlideURL: action.nextSlideURL}
+                        nextSlideURL: action.nextSlideURL,
+                        slideShowLength: action.slideShowLength}
     case 'RETURN_SLIDE':
       return {...state, currentSlide: state.currentSlide - 1};
     case 'UPDATE_PRESENTATION_ID':
       console.log('REDUCER PRES: ' + action.presentationID)
       return {...state, currentPresentation: action.presentationID}
     case 'GET_PRESENTATION_SLIDES_ARRAY':
-        return {...state}
-    case `UPDATE_PRESENTATION_SLIDES_ARRAY`:
-      return {...state, slideArray: action.slideArray}
+      return {...state}
+    case 'UPDATE_PRESENTATION_SLIDES_ARRAY':
+      console.log('Im being hit', action.slideShowLength)
+      return {...state, slideArray: action.slideArray,
+                        slideShowLength: action.slideShowLength}
     default: 
       return state;
   }
@@ -55,7 +59,8 @@ export function updateClientSlideshow(data){
     type: 'UPDATE_CLIENT',
     currentSlide: data.currentSlide,
     currentSlideURL: data.currentSlideURL,
-    nextSlideURL: data.nextSlideURL
+    nextSlideURL: data.nextSlideURL,
+    slideShowLength: data.slideShowLength
   }
 }
 export function returnSlide(){
@@ -76,10 +81,11 @@ export function getCurrentPresentationSlides() {
   }
 }
 export function updatePresentationSlides(presentationSlides) {
-  console.log('Action for getting slides')
+  console.log('Action for UPDATING slides', presentationSlides)
   return {
     type: 'UPDATE_PRESENTATION_SLIDES_ARRAY',
-    slideArray: presentationSlides
+    slideArray: presentationSlides,
+    slideShowLength: presentationSlides.length
   }
 }
 

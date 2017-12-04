@@ -22,7 +22,9 @@ export function socketMiddleware(store) {
                                     currentPresentation: state.presentation.currentPresentation })
     }
     if (socket && action.type === 'GET_PRESENTATION_SLIDES_ARRAY') {
-      socket.emit('update_slides_array', { currentPresentation: state.presentation.currentPresentation })
+      console.log('CONNECTIONS SLIDE SHOW LENGTH: ', state.presentation.slideShowLength)
+      socket.emit('update_slides_array', { currentPresentation: state.presentation.currentPresentation,
+                                           slideShowLength: state.presentation.slideShowLength })
     }
     if (socket && action.type === 'SUBMIT_QUESTION') {
       socket.emit('submit_question', { question: state.student.questionInputValue, slideNumber: state.presentation.currentSlide })
@@ -38,6 +40,7 @@ export default function(store) {
     // console.log('TESTING SOCKETS RECEIVE', data);
   })
   socket.on('update_client_presentation_array', (data) => {
+    // console.log(data)
     store.dispatch(presentationActions.updatePresentationSlides(data));
   })
   socket.on('update_questions', (data) => {

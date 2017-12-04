@@ -11,3 +11,10 @@
   max-width: 100%;
   max-height: 100vh;
 }
+
+.student-link {
+  font-size: 50px;
+  text-align: center;
+  margin-top: 200px;
+}
+

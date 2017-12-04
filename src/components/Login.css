@@ -10,9 +10,32 @@
 /* .button {
   padding: 0px;
 } */
+.login-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.google-login {
+  margin-right: auto;
+  text-decoration: none;
+  color: white;
+}
 .localLogin {
   display: flex;
   justify-content: space-between;
   margin-left: auto;
   width: 50%;
+}
+
+.localLogin form {
+  margin-left: auto;
+}
+
+.localLogin form div{
+  display: flex;
+  justify-content: space-between;
+  margin-left: auto;
+}
+
+.input-wrapper {
+  padding-left: 10px;
 }

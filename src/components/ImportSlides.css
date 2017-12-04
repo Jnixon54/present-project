@@ -1,0 +1,41 @@
+.import {
+  padding-left: 5px;
+}
+.import form {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.import-input {
+  margin-right: auto;
+  /* margin-left: 20px; */
+  height: 62%;
+  width: calc(100% - 80px);
+  justify-items: center;
+  border-bottom: 1px solid rgb(255, 0, 140);  
+}
+.import-input input { 
+  /* position: absolute; */
+  font-size: 16px;
+  /* bottom: 30px; */
+  padding: 0;
+  color: white;
+  background: transparent;
+  margin-right: auto;
+  width: calc(100%);
+  border: none;  
+}
+.import-submit {
+  width: 80px;
+  margin-left: auto;
+  
+}
+.import-submit input {
+  font-size: 20px;
+  height: 100%;
+  width: 100%;
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}

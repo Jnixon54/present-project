@@ -14,29 +14,45 @@ class PresenterScreen extends Component {
   }
 
   render () {
-    console.log(this.props.questions)
+    console.log(this.props.slideArray)
     const currentSlide = this.props.slideArray.find(item => item.slide_number === this.props.currentSlide);
     const nextSlide = this.props.slideArray.find(item => item.slide_number === this.props.currentSlide + 1);
 
-    const displayCurrentSlide = (this.props.currentSlide > 0 && currentSlide) ? <img src={currentSlide.url} alt="current slide" /> : <p>Hello</p>
-    const displayNextSlide = nextSlide ? <img src={nextSlide.url} alt="next slide" /> : <p>Hello</p>
+    const displayCurrentSlide = (this.props.currentSlide > 0 && currentSlide) ? <img src={currentSlide.url} alt="" /> : <div className="slides-container"/>
+    const displayNextSlide = nextSlide ? <img src={nextSlide.url} alt="" /> : <p>Hello</p>
 
+    let currentSlideQuestions = [];
+    this.props.questions.forEach((question) => { 
+      if (question.slideNumber === this.props.currentSlide) {
+          currentSlideQuestions.push(question.question)
+        }
+      }
+    )
+    currentSlideQuestions = currentSlideQuestions.map((question, index) => {return <p><span>{index}. </span>{question}</p> })
+    console.log(currentSlideQuestions)
     return (
       <div>
-        { this.props.currentPresentation} - { this.props.currentSlide }
-        <button onClick={this.props.returnSlide}>
-          Previous Slide
-        </button>
-        <button onClick={this.props.advanceSlide}>
-          Next Slide
-        </button>
-        <div className="slides-container">
+        <div className="slides-container slide-container">
           <div className="current-slide">
             { displayCurrentSlide }
           </div>
           <div className="preview-slide">
             { displayNextSlide }
+            <div className="current-slide-questions">
+            { currentSlideQuestions }
+            </div>
           </div>
+        </div>
+        <div className="slideshow-buttons">
+          <button onClick={this.props.returnSlide}>
+            {'<< '}Previous Slide
+          </button>
+          <div className="slide-number">
+            { this.props.currentSlide }
+          </div>
+          <button onClick={this.props.advanceSlide}>
+            Next Slide >>
+          </button>
         </div>
       </div>
     )

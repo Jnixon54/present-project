@@ -61,9 +61,11 @@ class HomePage extends Component {
         if (arr[i][j].slide_number === 1) {
           console.log(arr[i][j].url);
           icons.push(
-          <Link to={`/presentation/${arr[i][j].parent_id}`}>
-            <div className="slide-container"><img src={arr[i][j].url} alt={JSON.stringify(arr[i][j].parent_id)} /></div>
-          </Link>)
+          <div className="slide-container">
+            <Link to={`/presentation/${arr[i][j].parent_id}`}>
+              <div ><img src={arr[i][j].url} alt={JSON.stringify(arr[i][j].parent_id)} /></div>
+            </Link>
+          </div>)
         }
       }
     }
@@ -73,18 +75,13 @@ class HomePage extends Component {
 
     return (
       <div className="container">
-        <div className="left-container">
-          <h1>
-            Import
-          </h1>
-          <ImportSlides />
-        </div>
         <div className="right-container">
-          <h1>
+          <h1 className="home-header">
             Presentations
           </h1>
+          <ImportSlides />
           <div className="presentations">
-          { icons }
+              { icons }
           </div>
         </div>
       </div>
