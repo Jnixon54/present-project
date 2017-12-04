@@ -130,7 +130,7 @@ app.get('/google/auth/login', passport.authenticate('google', { scope: ['https:/
 app.get('/google/auth/logincallback', passport.authenticate('google', { 
   // successRedirect: `http://localhost:3000/home/${user.id}`,
   failureRedirect: 'http://localhost:3000/login',
-  failureFlash: true}), (req, res, next) => {res.redirect(`http://localhost:3000/home/${req.user.id}`);return;})
+  failureFlash: true}), (req, res, next) => {res.redirect(`http://162.243.186.115.xip.io:3001/home/${req.user.id}`);return;})
 
 app.get('/login')
 app.post( '/login', passport.authenticate( ['local'], { failureRedirect: '/login',
