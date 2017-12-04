@@ -18,11 +18,11 @@ class HomePage extends Component {
   componentDidMount() {
     console.log(this.props.match.params.id);
     this.props.setUserID(this.props.match.params.id);
-    axios.get(`http://localhost:3001/user_presentations/${this.props.match.params.id}`).then(result => {
+    axios.get(`http://162.243.186.115.xip.io:3001/user_presentations/${this.props.match.params.id}`).then(result => {
       const promises = [];
       for (let i = 0; i < result.data.length; i++) {
         // console.log(result.data[i])
-        promises.push(axios.get(`http://localhost:3001/slides/${result.data[i].id}`));
+        promises.push(axios.get(`http://162.243.186.115.xip.io:3001/slides/${result.data[i].id}`));
       }
       axios.all(promises).then(results => {
         const presentations = [];

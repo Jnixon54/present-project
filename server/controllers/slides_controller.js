@@ -60,7 +60,7 @@ module.exports = {
     }
     axios.all(promises).catch(console.log)
     if (req.session.user) {
-      return res.redirect(`http://162.243.186.115.xip.io:3000/home/${req.session.user}`);
+      return res.redirect(`http://162.243.186.115.xip.io:3001/home/${req.session.user}`);
     } else {
       return res.redirect(`http://localhost:3000/`);
     }
