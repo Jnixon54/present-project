@@ -28,7 +28,7 @@ class ImportSlides extends Component {
     try{
       url = new URL(originalUrl);
       this.setState({presentation_id: url.pathname.split('/')[3]}, () => {
-        window.location.href=`http://localhost:3001/api/presentation/getPresentation/${this.state.presentation_id}`;
+        window.location.href=`http://162.243.186.115.xip.io:3001/api/presentation/getPresentation/${this.state.presentation_id}`;
       })
     }
     catch(err) {
