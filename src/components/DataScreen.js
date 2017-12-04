@@ -18,8 +18,8 @@ class DataScreen extends Component {
     }
     console.log(questionsPerSlide);
     const data = {
-      // labels: slideLabels, // SlideNumbers
-      labels: [1,2,3,4,5,6,7,8,9,10],
+      labels: slideLabels, // SlideNumbers
+      // labels: [1,2,3,4,5,6,7,8,9,10],
       datasets: [
         {
           label: 'Question Summary',
@@ -30,8 +30,8 @@ class DataScreen extends Component {
           borderWidth: 3,
           hoverBackgroundColor: 'rgba(255, 0, 140, 0.4)',
           hoverBorderColor: 'rgba(255, 0, 140, 1)',
-          data: [1,2,5,2,5,2,1,3,7,100]
-          // data: questionsPerSlide // Number of questions per slide
+          // data: [1,2,5,2,5,2,1,3,7,100]
+          data: questionsPerSlide // Number of questions per slide
         }
       ]
     };
