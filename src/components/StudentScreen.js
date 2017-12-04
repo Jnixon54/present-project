@@ -19,7 +19,8 @@ class StudentScreen extends Component {
   }
 
   render () {
-    const slide = this.props.currentSlideURL ? <img src={this.props.currentSlideURL} alt="img" /> : 'Connection Info';
+    console.log(this.props.currentSlide)
+    const slide = this.props.currentSlideURL ? <img src={this.props.currentSlideURL} alt="img" /> : <div className="student-link">{'Link: ' + `http://localhost:3000/presentation/${this.props.match.params.id}/student`}</div>;
     // const currentSlide = this.props.slideArray.find(item => item.slide_number === this.props.currentSlide);
     // const slide = currentSlide ? <img src={currentSlide.url} alt="img" /> : 'Connection Info';
     const slideShowMarkup = 
