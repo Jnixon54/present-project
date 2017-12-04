@@ -35,7 +35,7 @@ sequelize
 //////////////////////////////////////////////////////////////////
 // App Setup
 const app = express();
-app.use( express.static( `${__dirname}/../build` ) );
+app.use( express.static( `${__dirname}/../public` ) );
 app.use(cors());
 app.use(json());
 app.use(session({ // Must be used before passport.session()
